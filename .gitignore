@@ -11,3 +11,4 @@ sym.java
 src/compiladorhtml/Lexer.java
 src/compiladorhtml/LexerCup.java
 src/compiladorhtml/Sintax.java
+nbproject/project.xml
