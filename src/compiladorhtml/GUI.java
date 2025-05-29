@@ -239,7 +239,6 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-<<<<<<< HEAD
                     .addGroup(layout.createSequentialGroup()
                         .addGap(186, 186, 186)
                         .addComponent(jLabel1))
@@ -266,15 +265,6 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(btnAnalizarSin, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
                             .addComponent(btnLimpiarSin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-=======
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(jLabel1))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
->>>>>>> f41207daaefc5ebd07213fcfae7302521d353023
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,7 +290,6 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }// GEN-LAST:event_txtNombreArchivoActionPerformed
 
-<<<<<<< HEAD
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarLexActionPerformed
         File archivo = new File("Archivo.txt");
         PrintWriter escribir;
@@ -312,11 +301,6 @@ public class GUI extends javax.swing.JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-=======
-    private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarLexActionPerformed
-        DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
-        modelo.setRowCount(0);
->>>>>>> f41207daaefc5ebd07213fcfae7302521d353023
         try {
             Reader lector = new StringReader(txtEntrada.getText());
             Lexer lexer = new Lexer(lector);
@@ -324,7 +308,6 @@ public class GUI extends javax.swing.JFrame {
             while (true) {
                 Tokens tokens = lexer.yylex();
                 if (tokens == null) {
-<<<<<<< HEAD
                     resultado += "FIN";
                     txtLexico.setText(resultado);
                 }
@@ -422,9 +405,6 @@ public class GUI extends javax.swing.JFrame {
                     default:
                         resultado += "Token: " + tokens + "\n";
                         break;
-=======
-                    break;
->>>>>>> f41207daaefc5ebd07213fcfae7302521d353023
                 }
 
                 modelo.addRow(new Object[]{lexer.lexeme, tokens, 1, 1});
@@ -453,7 +433,6 @@ public class GUI extends javax.swing.JFrame {
             txtEntrada.setText(ST);
             txtNombreArchivo.setText(archivo.toPath().toString());
         } catch (IOException e) {
-<<<<<<< HEAD
 
         }
     }// GEN-LAST:event_btnArchivoActionPerformed
@@ -461,16 +440,6 @@ public class GUI extends javax.swing.JFrame {
     private void btnLimpiarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnLimpiarLexActionPerformed
         txtLexico.setText(null);
     }// GEN-LAST:event_btnLimpiarLexActionPerformed
-=======
-
-        }
-    }//GEN-LAST:event_btnArchivoActionPerformed
-
-    private void btnLimpiarLexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLexActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tablaSimbolo.getModel();
-        model.setRowCount(0);
-    }//GEN-LAST:event_btnLimpiarLexActionPerformed
->>>>>>> f41207daaefc5ebd07213fcfae7302521d353023
 
     /**
      * @param args the command line arguments
