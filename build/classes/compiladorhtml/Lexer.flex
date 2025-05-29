@@ -20,9 +20,6 @@ espacio=[ ,\t,\r]+
 /* Salto de linea */
 ( "\n" ) {return Linea;}
 
-/* Comillas */
-( "\"" ) {lexeme=yytext(); return Comillas;}
-
 /* Tipos de datos */
 ( byte | int | char | long | float | double ) {lexeme=yytext(); return T_dato;}
 
@@ -43,9 +40,6 @@ espacio=[ ,\t,\r]+
 
 /* Palabra reservada For */
 ( for ) {lexeme=yytext(); return For;}
-
-/* Operador Igual */
-( "=" ) {lexeme=yytext(); return Igual;}
 
 /* Operador Suma */
 ( "+" ) {lexeme=yytext(); return Suma;}
@@ -106,3 +100,36 @@ espacio=[ ,\t,\r]+
 
 /* Error de analisis */
  . {return ERROR;}
+
+/* simbolos */
+( "#" )     {lexeme=yytext(); return Numeral;}
+( "$" )     {lexeme=yytext(); return Dolar;}
+( "/" )     {lexeme=yytext(); return CierreDiag;}
+( "<" )     {lexeme=yytext(); return AperturaE;}
+( ">" )     {lexeme=yytext(); return CierreE;}
+( "!" )     {lexeme=yytext(); return Admiracion;}
+( "=" )     {lexeme=yytext(); return Igual;}
+( "\"" )    {lexeme=yytext(); return Comillas;}
+
+/* Palabras reservadas*/
+( "p" )     {lexeme=yytext(); return Parrafo;}
+( "en" )    {lexeme=yytext(); return En;}
+( "es" )    {lexeme=yytext(); return Es;}
+( "img" )  {lexeme=yytext(); return Img;}
+( "src" )  {lexeme=yytext(); return Src;}
+( "alt" )  {lexeme=yytext(); return Alt;}
+( "html" )  {lexeme=yytext(); return Html;}
+( "head" )  {lexeme=yytext(); return Head;}
+( "title" ) {lexeme=yytext(); return Title;}
+( "body" )  {lexeme=yytext(); return Body;}
+( "div" )   {lexeme=yytext(); return Div;}
+( "align" ) {lexeme=yytext(); return Align;}
+( "width" ) {lexeme=yytext(); return Width;}
+( "lang" )  {lexeme=yytext(); return Lang;}
+( "left" )  {lexeme=yytext(); return Left;}
+( "right" ) {lexeme=yytext(); return Right;}
+( "center" ) {lexeme=yytext(); return Center;}
+( "justify" )   {lexeme=yytext(); return Justify;}
+( "DOCTYPE" )   {lexeme=yytext(); return Doctype;}
+
+

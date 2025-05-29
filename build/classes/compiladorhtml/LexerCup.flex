@@ -26,9 +26,6 @@ espacio=[ ,\t,\r,\n]+
 /* Comentarios */
 ( "//"(.)* ) {/*Ignore*/}
 
-/* Comillas */
-( "\"" ) {return new Symbol(sym.Comillas, yychar, yyline, yytext());}
-
 /* Tipos de datos */
 ( byte | char | long | float | double ) {return new Symbol(sym.T_dato, yychar, yyline, yytext());}
 
@@ -52,9 +49,6 @@ espacio=[ ,\t,\r,\n]+
 
 /* Palabra reservada For */
 ( for ) {return new Symbol(sym.For, yychar, yyline, yytext());}
-
-/* Operador Igual */
-( "=" ) {return new Symbol(sym.Igual, yychar, yyline, yytext());}
 
 /* Operador Suma */
 ( "+" ) {return new Symbol(sym.Suma, yychar, yyline, yytext());}
@@ -115,3 +109,34 @@ espacio=[ ,\t,\r,\n]+
 
 /* Error de analisis */
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}
+
+ /* simbolos */
+( "#" )     {return new Symbol(sym.Numeral, yychar, yyline, yytext());}
+( "$" )     {return new Symbol(sym.Dolar, yychar, yyline, yytext());}
+( "/" )     {return new Symbol(sym.CierreDiag, yychar, yyline, yytext());}
+( "<" )     {return new Symbol(sym.AperturaE, yychar, yyline, yytext());}
+( ">" )     {return new Symbol(sym.CierreE, yychar, yyline, yytext());}
+( "!" )     {return new Symbol(sym.Admiracion, yychar, yyline, yytext());}
+( "=" )     {return new Symbol(sym.Igual, yychar, yyline, yytext());}
+( "\"" )    {return new Symbol(sym.Comillas, yychar, yyline, yytext());}
+
+/* Palabras reservadas*/
+( "p" )     {return new Symbol(sym.Parrafo, yychar, yyline, yytext());}
+( "en" )    {return new Symbol(sym.En, yychar, yyline, yytext());}
+( "es" )    {return new Symbol(sym.Es, yychar, yyline, yytext());}
+( "img" )   {return new Symbol(sym.Img, yychar, yyline, yytext());}
+( "src" )   {return new Symbol(sym.Src, yychar, yyline, yytext());}
+( "alt" )   {return new Symbol(sym.Alt, yychar, yyline, yytext());}
+( "html" )  {return new Symbol(sym.Html, yychar, yyline, yytext());}
+( "head" )  {return new Symbol(sym.Head, yychar, yyline, yytext());}
+( "title" ) {return new Symbol(sym.Title, yychar, yyline, yytext());}
+( "body" )  {return new Symbol(sym.Body, yychar, yyline, yytext());}
+( "div" )   {return new Symbol(sym.Div, yychar, yyline, yytext());}
+( "align" ) {return new Symbol(sym.Align, yychar, yyline, yytext());}
+( "width" ) {return new Symbol(sym.Width, yychar, yyline, yytext());}
+( "lang" )  {return new Symbol(sym. Lang, yychar, yyline, yytext());}
+( "left" )  {return new Symbol(sym.Left, yychar, yyline, yytext());}
+( "right" )     {return new Symbol(sym.Right, yychar, yyline, yytext());}
+( "center" )    {return new Symbol(sym.Center, yychar, yyline, yytext());}
+( "justify" )   {return new Symbol(sym.Justify, yychar, yyline, yytext());}
+( "DOCTYPE" )   {return new Symbol(sym.Doctype, yychar, yyline, yytext());}

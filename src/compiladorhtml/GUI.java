@@ -93,6 +93,11 @@ public class GUI extends javax.swing.JFrame {
         jLabel2.setText("Analizador Lexico");
 
         btnLimpiarLex.setText("Limpiar");
+        btnLimpiarLex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarLexActionPerformed(evt);
+            }
+        });
 
         txtSintactico.setColumns(20);
         txtSintactico.setRows(5);
@@ -192,7 +197,7 @@ public class GUI extends javax.swing.JFrame {
                 Tokens tokens = lexer.yylex();
                 if (tokens == null){
                     resultado += "FIN";
-                    txtEntrada.setText(resultado);
+                    txtLexico.setText(resultado);
                 }
                 switch (tokens){
                     case ERROR:
@@ -234,6 +239,10 @@ public class GUI extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_btnArchivoActionPerformed
+
+    private void btnLimpiarLexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLexActionPerformed
+        txtLexico.setText(null);
+    }//GEN-LAST:event_btnLimpiarLexActionPerformed
 
     /**
      * @param args the command line arguments
