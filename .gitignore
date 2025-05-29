@@ -7,8 +7,8 @@ nbproject/project.properties
 nbproject/genfiles.properties
 # source
 Archivo.txt
-sym.java
-src/compiladorhtml/Lexer.java
-src/compiladorhtml/LexerCup.java
-src/compiladorhtml/Sintax.java
-nbproject/project.xml
+*sym.java*
+*Lexer.java*
+*LexerCup.java*
+*Sintax.java*
+*project.xml*
