@@ -2,11 +2,12 @@ build/
 /dist/
 nbproject/private/private.properties
 nbproject/private/private.xml
+nbproject/build-impl.xml
+nbproject/project.properties
+nbproject/genfiles.properties
+# source
 Archivo.txt
 sym.java
 src/compiladorhtml/Lexer.java
 src/compiladorhtml/LexerCup.java
 src/compiladorhtml/Sintax.java
-nbproject/build-impl.xml
-nbproject/project.properties
-nbproject/genfiles.properties
