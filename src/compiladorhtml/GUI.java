@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package compiladorhtml;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.StringReader;
@@ -12,11 +7,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -24,13 +19,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GUI extends javax.swing.JFrame {
 
-    ArrayList<Simbolo> listaSimbolo;
-
-    /**
-     * Creates new form GUI
-     */
     public GUI() {
-        this.listaSimbolo = new ArrayList<>();
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -71,6 +60,7 @@ public class GUI extends javax.swing.JFrame {
 
         txtEntrada.setColumns(20);
         txtEntrada.setRows(5);
+        txtEntrada.setToolTipText("");
         txtEntrada.setName("txtLexico"); // NOI18N
         jScrollPane1.setViewportView(txtEntrada);
         txtEntrada.getAccessibleContext().setAccessibleName("");
@@ -239,32 +229,13 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(186, 186, 186)
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtNombreArchivo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnArchivo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnAnalizarLex))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnLimpiarLex)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2))
-                            .addComponent(jScrollPane2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAnalizarSin, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                            .addComponent(btnLimpiarSin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,120 +262,16 @@ public class GUI extends javax.swing.JFrame {
     }// GEN-LAST:event_txtNombreArchivoActionPerformed
 
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarLexActionPerformed
-        File archivo = new File("Archivo.txt");
-        PrintWriter escribir;
-        try {
-            escribir = new PrintWriter(archivo);
-            escribir.print(txtEntrada.getText());
-            escribir.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         try {
             Reader lector = new StringReader(txtEntrada.getText());
             Lexer lexer = new Lexer(lector);
+            DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
 
             while (true) {
                 Tokens tokens = lexer.yylex();
+                
                 if (tokens == null) {
-                    resultado += "FIN";
-                    txtLexico.setText(resultado);
-                }
-                switch (tokens) {
-                    case ERROR:
-                        resultado += "Simbolo no definido\n";
-                        break;
-                    case Identificador:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Numero:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Numeral:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Dolar:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case CierreDiag:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case AperturaE:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case CierreE:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Admiracion:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Igual:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Comillas:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Parrafo:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case En:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Es:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Img:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Src:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Alt:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Html:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Head:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Title:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Body:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Div:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Align:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Width:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Lang:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Left:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Right:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Center:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Justify:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    case Doctype:
-                        resultado += lexer.lexeme + ": \t\tEs un " + tokens + "\n";
-                        break;
-                    default:
-                        resultado += "Token: " + tokens + "\n";
-                        break;
+                    break;
                 }
 
                 modelo.addRow(new Object[]{lexer.lexeme, tokens, 1, 1});
@@ -438,7 +305,8 @@ public class GUI extends javax.swing.JFrame {
     }// GEN-LAST:event_btnArchivoActionPerformed
 
     private void btnLimpiarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnLimpiarLexActionPerformed
-        txtLexico.setText(null);
+        DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
+        modelo.setRowCount(0);
     }// GEN-LAST:event_btnLimpiarLexActionPerformed
 
     /**
