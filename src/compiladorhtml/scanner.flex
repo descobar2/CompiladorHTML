@@ -36,7 +36,6 @@ import Nodos.Token;
     AperturaE = "<"
     CierreE = ">"
     Admiracion = "!"
-    Igual = "="
     
 //---RESERVADAS
     Html = "html"

@@ -280,7 +280,7 @@ public class GUI extends javax.swing.JFrame {
             if (errores.size() > 0) {
                 this.txtSintactico.setText("");
                 for (NodoError error : errores) {
-                    this.txtSintactico.append(error.getSimbolo() + "; " + error.getTipo() + "; " + error.getDescripcion() + "\n");
+                    this.txtSintactico.append(error.getSimbolo() + "; " + error.getTipo() + "; " + error.getDescripcion() + "; Fil:" + error.getFila() + "; Col:" + error.getColumna() + "\n");
                 }
             }
         } catch (Exception e) {
@@ -311,6 +311,9 @@ public class GUI extends javax.swing.JFrame {
     private void btnLimpiarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnLimpiarLexActionPerformed
         DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
         modelo.setRowCount(0);
+        txtSintactico.setText("");
+        this.errores.clear();
+     
     }// GEN-LAST:event_btnLimpiarLexActionPerformed
 
     /**
