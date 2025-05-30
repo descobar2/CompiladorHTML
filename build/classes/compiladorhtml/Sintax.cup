@@ -15,97 +15,15 @@ parser code
 }
 :};
 
-terminal Numeral, Dolar, CierreDiag, AperturaE, CierreE, Admiracion, Igual, Comillas,
-    Parrafo, En, Es, Img, Src, Alt, Html, Head, Title, Body, Div, Align, Width, Lang,
-    Left, Right, Center, Justify, Doctype, Identificador,Numero, ERROR;;
-
-non terminal DOCUMENTO, ELEMENTO_HTML, DOCTYPE_DECL, HTML_TAG, HEAD_SECTION, 
-    BODY_SECTION, TITULO, ELEMENTO, LISTA_ELEMENTOS, CONTENIDO, ATRIBUTOS, 
-    LISTA_ATRIBUTOS,ATRIBUTO, VALOR_ALIGN, ETIQUETA_APERTURA, ETIQUETA_CIERRE, 
-    ETIQUETA_AUTO_CIERRE,DIV_ELEMENT, P_ELEMENT, IMG_ELEMENT 
+terminal Numeral, Dolar, CierreDiag,AperturaE, CierreE, Admiracion, Igual,
+    Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Imagen,
+    Source, Alt, Width, Ident, CADENA
+;
+non terminal INICIO
+;
 
 start with INICIO;
 
 INICIO ::= 
-    DOCTYPE_DECL HTML_TAG |
-    HTML_TAG    
-;
-
-DOCTYPE_DECL ::= 
-    Dolar Admiracion Doctype Html Numeral
-;
-
-HTML_TAG ::= 
-    Dolar Html ATRIBUTOS Numeral HEAD_SECTION BODY_SECTION Dolar CierreDiag Html Numeral |
-    Dolar Html Numeral HEAD_SECTION BODY_SECTION Dolar CierreDiag Html Numeral
-;
-
-HEAD_SECTION ::= 
-    Dolar Head Numeral TITULO Dolar CierreDiag Head Numeral
-;
-
-TITULO ::= 
-    Dolar Title Numeral CONTENIDO Dolar CierreDiag Title Numeral
-;
-
-BODY_SECTION ::= 
-    Dolar Body Numeral LISTA_ELEMENTOS Dolar CierreDiag Body Numeral
-;
-
-LISTA_ELEMENTOS ::= 
-    LISTA_ELEMENTOS ELEMENTO |
-    ELEMENTO |
-    /* vacío */
-;
-
-ELEMENTO ::= 
-    DIV_ELEMENT |
-    P_ELEMENT |
-    IMG_ELEMENT |
-    CONTENIDO
-;
-
-DIV_ELEMENT ::= 
-    Dolar Div ATRIBUTOS Numeral LISTA_ELEMENTOS Dolar CierreDiag Div Numeral |
-    Dolar Div Numeral LISTA_ELEMENTOS Dolar CierreDiag Div Numeral
-;
-
-P_ELEMENT ::= 
-    Dolar Parrafo ATRIBUTOS Numeral LISTA_ELEMENTOS Dolar CierreDiag Parrafo Numeral |
-    Dolar Parrafo Numeral LISTA_ELEMENTOS Dolar CierreDiag Parrafo Numeral
-;
-
-IMG_ELEMENT ::= 
-    Dolar Img ATRIBUTOS CierreDiag Numeral |
-    Dolar Img ATRIBUTOS Numeral
-;
-
-ATRIBUTOS ::= 
-    LISTA_ATRIBUTOS |
-    /* vacío */
-;
-
-LISTA_ATRIBUTOS ::= 
-    LISTA_ATRIBUTOS ATRIBUTO |
-    ATRIBUTO
-;
-
-ATRIBUTO ::= 
-    Align Igual Comillas VALOR_ALIGN Comillas |
-    Lang Igual Comillas IDENTIFICADOR Comillas |
-    Src Igual Comillas VALOR_ATRIBUTO Comillas |
-    Alt Igual Comillas VALOR_ATRIBUTO Comillas |
-    Width Igual Comillas VALOR_ATRIBUTO Comillas
-;
-
-VALOR_ALIGN ::= 
-    Left |
-    Right |
-    Center |
-    Justify
-;
-
-CONTENIDO ::= 
-    TEXTO |
-    /* vacío */
+    Html
 ;

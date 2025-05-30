@@ -7,13 +7,14 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 public class GUI extends javax.swing.JFrame {
     
-    static public ArrayList<nodos.Token> listaTokens;
-    static public ArrayList<nodos.Token> errores;
+    static public ArrayList<Nodos.Token> listaTokens = new ArrayList<>();
+    static public ArrayList<Nodos.NodoError> errores = new ArrayList<>();
     
     public GUI() {
         initComponents();
@@ -264,13 +265,13 @@ public class GUI extends javax.swing.JFrame {
             modelo.setRowCount(0);
             
             while (true) {
-                Tokens tokens = scan.next_token();
+                Symbol symbol = scan.next_token();
 
-                if (tokens == null) {
+                if (symbol.value == null) {
                     break;
                 }
 
-                modelo.addRow(new Object[]{scan.yytext(), tokens, 1, 1});
+                modelo.addRow(new Object[]{symbol.value, "ident", symbol.left, symbol.right});
             }
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
