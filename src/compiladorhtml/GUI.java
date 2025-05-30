@@ -1,8 +1,11 @@
 package compiladorhtml;
 
+import Nodos.NodoError;
+import Nodos.Token;
 import java.io.File;
 import java.io.StringReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -12,10 +15,10 @@ import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 public class GUI extends javax.swing.JFrame {
-    
+
     static public ArrayList<Nodos.Token> listaTokens = new ArrayList<>();
     static public ArrayList<Nodos.NodoError> errores = new ArrayList<>();
-    
+
     public GUI() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -253,7 +256,7 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void txtNombreArchivoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtNombreArchivoActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_txtNombreArchivoActionPerformed
@@ -263,7 +266,7 @@ public class GUI extends javax.swing.JFrame {
             scanner scan = new scanner(new StringReader(txtEntrada.getText()));
             DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
             modelo.setRowCount(0);
-            
+
             while (true) {
                 Symbol symbol = scan.next_token();
 
@@ -271,7 +274,14 @@ public class GUI extends javax.swing.JFrame {
                     break;
                 }
 
-                modelo.addRow(new Object[]{symbol.value, "ident", symbol.left, symbol.right});
+                modelo.addRow(new Object[]{symbol.value, getTokenName(symbol), symbol.left, symbol.right});
+            }
+            
+            if (errores.size() > 0) {
+                this.txtSintactico.setText("");
+                for (NodoError error : errores) {
+                    this.txtSintactico.append(error.getSimbolo() + "; " + error.getTipo() + "; " + error.getDescripcion() + "\n");
+                }
             }
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
@@ -342,6 +352,18 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
+    public String getTokenName(Symbol symbol) {
+        try {
+            for (Field field : sym.class.getFields()) {
+                if (field.getType() == int.class && field.getInt(null) == symbol.sym) {
+                    return field.getName();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "SIMBOLO_DESCONOCIDO_" + symbol.sym;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

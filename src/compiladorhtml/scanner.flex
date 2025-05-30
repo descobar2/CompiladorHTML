@@ -24,10 +24,12 @@ import Nodos.Token;
 %state CADENA
 %state COMLINEA
 %state COMMULTI
-%ignorecase
+//%ignorecase
 
 //RESERVADAS--------------------------------------------------------------------
 //---SIMBOLOS
+    Asignar = "="
+    Coma = ","
     Numeral = "#"
     Dolar = "$"
     CierreDiag = "/"
@@ -62,6 +64,14 @@ import Nodos.Token;
 //TOKENS------------------------------------------------------------------------
 
 //---SímboloS
+    <YYINITIAL> {Asignar} {
+        GUI.listaTokens.add(new Token(yytext(), "Asignar", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Asignar, (yyline + 1), (yycolumn + 1), yytext());
+    }    
+    <YYINITIAL> {Coma} {
+        GUI.listaTokens.add(new Token(yytext(), "Coma", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Coma, (yyline + 1), (yycolumn + 1), yytext());
+    }    
     <YYINITIAL> {Numeral} {
         GUI.listaTokens.add(new Token(yytext(), "Numeral", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Numeral, (yyline + 1), (yycolumn + 1), yytext());

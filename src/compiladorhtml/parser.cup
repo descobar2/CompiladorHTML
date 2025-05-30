@@ -15,7 +15,7 @@ parser code
 }
 :};
 
-terminal Numeral, Dolar, CierreDiag,AperturaE, CierreE, Admiracion, Igual,
+terminal Asignar, Coma, Numeral, Dolar, CierreDiag,AperturaE, CierreE, Admiracion, Igual,
     Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Imagen,
     Source, Alt, Width, Ident, CADENA
 ;
