@@ -260,7 +260,8 @@ public class GUI extends javax.swing.JFrame {
             Reader lector = new StringReader(txtEntrada.getText());
             Lexer lexer = new Lexer(lector);
             DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
-
+            modelo.setRowCount(0);
+            
             while (true) {
                 Tokens tokens = lexer.yylex();
 
@@ -270,11 +271,8 @@ public class GUI extends javax.swing.JFrame {
 
                 modelo.addRow(new Object[]{lexer.lexeme, tokens, 1, 1});
             }
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         }
     }// GEN-LAST:event_btnAnalizarLexActionPerformed
 
