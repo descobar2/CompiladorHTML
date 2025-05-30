@@ -4,19 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
-/**
- *
- * @author niko
- */
 public class GUI extends javax.swing.JFrame {
 
     public GUI() {
