@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package compiladorhtml;
 
 import java.io.File;
@@ -15,48 +11,20 @@ import java.nio.file.Paths;
  * @author niko
  */
 public class CompiladorHTML {
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Log: ");
-        String ruta1 = "src/compiladorhtml/Lexer.flex";
-        String ruta2 = "src/compiladorhtml/LexerCup.flex";
-        String[] rutaS = {"-parser", "Sintax", "src/compiladorhtml/Sintax.cup"};
-                
-        generar(ruta1,ruta2,rutaS);
+        generar();
     }
-    
-    public static void generar(String ruta1,String ruta2, String[] rutaS ) throws IOException, Exception{
-        File archivo;
-        archivo = new File(ruta1);
-        JFlex.Main.generate(archivo);
-/*       
-        Path rutaLexer = Paths.get("src/compiladorhtml/Lexer.java");
-        if (Files.exists(rutaLexer)){
-            Files.delete(rutaLexer);
-        }        
-        Files.move(
-            Paths.get("Lexer.java"),
-            Paths.get("src/compiladorhtml/Lexer.java")
-        );
-*/
-        archivo = new File(ruta2);
-        JFlex.Main.generate(archivo);
-        Path rutaSym = Paths.get("src/compiladorhtml/sym.java");
-        if (Files.exists(rutaSym)){
-            Files.delete(rutaSym);
+
+    public static void generar() throws IOException, Exception {
+        try {
+            String ruta = "src/compiladorhtml/"; //RUTA DE ARCHIVOS .JFLEX Y .CUP
+            String opcFlex[] = {ruta + "Lexer.flex", "-d", ruta};
+            JFlex.Main.generate(opcFlex);
+            String opcCUP[] = {"-expect", "6", "-destdir", ruta, "-parser", "parser", ruta + "sintax.cup"};
+            java_cup.Main.main(opcCUP);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Files.move(
-            Paths.get("sym.java"),
-            Paths.get("src/compiladorhtml/sym.java")
-        );
-        
-        java_cup.Main.main(rutaS);
-        Path rutaSin = Paths.get("src/compiladorhtml/Sintax.java");
-        if (Files.exists(rutaSin)){
-            Files.delete(rutaSin);
-        }
-        Files.move(
-            Paths.get("Sintax.java"),
-            Paths.get("src/compiladorhtml/Sintax.java")
-        );
     }
 }

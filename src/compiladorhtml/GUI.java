@@ -269,7 +269,7 @@ public class GUI extends javax.swing.JFrame {
 
             while (true) {
                 Tokens tokens = lexer.yylex();
-                
+
                 if (tokens == null) {
                     break;
                 }
