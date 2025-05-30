@@ -1,18 +1,20 @@
 package compiladorhtml;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 public class GUI extends javax.swing.JFrame {
-
+    
+    static public ArrayList<nodos.Token> listaTokens;
+    static public ArrayList<nodos.Token> errores;
+    
     public GUI() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -250,26 +252,25 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void txtNombreArchivoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtNombreArchivoActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_txtNombreArchivoActionPerformed
 
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarLexActionPerformed
         try {
-            Reader lector = new StringReader(txtEntrada.getText());
-            Lexer lexer = new Lexer(lector);
+            scanner scan = new scanner(new StringReader(txtEntrada.getText()));
             DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
             modelo.setRowCount(0);
             
             while (true) {
-                Tokens tokens = lexer.yylex();
+                Tokens tokens = scan.next_token();
 
                 if (tokens == null) {
                     break;
                 }
 
-                modelo.addRow(new Object[]{lexer.lexeme, tokens, 1, 1});
+                modelo.addRow(new Object[]{scan.yytext(), tokens, 1, 1});
             }
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
@@ -339,6 +340,8 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizarLex;

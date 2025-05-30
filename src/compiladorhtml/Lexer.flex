@@ -1,19 +1,20 @@
 package compiladorhtml;
-import static compiladorhtml.Tokens.*;
+
 import java_cup.runtime.Symbol;
+import GUI.GUI;
+import GUI.ResaltarTokens;
+import Nodos.NodoError;
+import Nodos.Token;
+
 %%
-%class Lexer
-%type Tokens
-L=[a-zA-Z_]+
-D=[0-9]+
-espacio=[ ,\t,\r]+
+
 %{
-    public String lexeme;
     String cadena = "";
     String comL = "";
     String comM = "";
     int inicio = 0;
     int tamano = 0;
+    public ResaltarTokens resaltar = new ResaltarTokens();
 %}
 
 %cup
@@ -28,136 +29,167 @@ espacio=[ ,\t,\r]+
 %state COMMULTI
 %ignorecase
 
+//RESERVADAS--------------------------------------------------------------------
+//---SímboloS
+    Numeral = "#"
+    Dolar = "$"
+    CierreDiag = "/"
+    AperturaE = "<"
+    CierreE = ">"
+    Admiracion = "!"
+    Igual = "="
+    
+//---RESERVADAS
+    Html = "html"
+    Head = "head"
+    Title = "title"
+    Body = "body"
+    Div = "div"
+    Align = "align"
+    Doctype = "DOCTYPE"
+    Lang = "lang"
+    Parrafo = "p"
+    Imagen = "img"
+    Source = "src"
+    Alt = "alt"
+    Width = "width"
+
+//---REGEX
+    Enter = \r|\n|\r\n|\u2028|\u2029|\000B|\000c|\0085
+    // Entero = [0-9]+
+    Espacios = [\ \t\f\b\r\n]
+    // Flotante = [0-9]+[.][0-9]+
+    Ident = ([A-Za-zñÑÁáÉéÍíÓóÚú]|("."[._A-Za-zñÑÁáÉéÍíÓóÚú]))[._0-9A-Za-zñÑÁáÉéÍíÓóÚú]*
+
 %%
+//TOKENS------------------------------------------------------------------------
 
-/* Espacios en blanco */
-{espacio} {/*Ignore*/}
+//---SímboloS
+    <YYINITIAL> {Numeral} {
+        GUI.listaTokens.add(new Token(yytext(), "Numeral", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Numeral, (yyline + 1), (yycolumn + 1), yytext());
+    }    
+    <YYINITIAL> {Dolar} {
+        GUI.listaTokens.add(new Token(yytext(), "Dólar", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Dolar, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {CierreDiag} {
+        GUI.listaTokens.add(new Token(yytext(), "Cierre diagonal", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.CierreDiag, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {AperturaE} {
+        GUI.listaTokens.add(new Token(yytext(), "Apertura de etiqueta", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.AperturaE, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {CierreE} {
+        GUI.listaTokens.add(new Token(yytext(), "Cierre de etiqueta", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.CierreE, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Admiracion} {
+        GUI.listaTokens.add(new Token(yytext(), "Admiración", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Admiracion, (yyline + 1), (yycolumn + 1), yytext());
+    }
 
-/* Comentarios 
-( "//"(.)* ) {/*Ignore*/} */
+//---RESERVADAS
+    <YYINITIAL> {Html} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Html, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Head} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Head, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Title} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Title, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Body} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Body, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Div} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Div, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Align} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Align, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Doctype} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Doctype, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Lang} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Lang, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Parrafo} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Parrafo, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Imagen} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Imagen, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Source} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Source, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Alt} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Alt, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Width} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Width, (yyline + 1), (yycolumn + 1), yytext());
+    }
 
-/* Salto de linea */
-( "\n" ) {/*Ignore*/}
-
-/* Tipos de datos */
-( byte | int | char | long | float | double ) {lexeme=yytext(); return T_dato;}
-
-/* Tipo de dato String */
-( String ) {lexeme=yytext(); return Cadena;}
-
-/* Palabra reservada If */
-( if ) {lexeme=yytext(); return If;}
-
-/* Palabra reservada Else */
-( else ) {lexeme=yytext(); return Else;}
-
-/* Palabra reservada Do */
-( do ) {lexeme=yytext(); return Do;}
-
-/* Palabra reservada While */
-( while ) {lexeme=yytext(); return While;}
-
-/* Palabra reservada For */
-( for ) {lexeme=yytext(); return For;}
-
-/* Operador Suma */
-( "+" ) {lexeme=yytext(); return Suma;}
-
-/* Operador Resta */
-( "-" ) {lexeme=yytext(); return Resta;}
-
-/* Operador Multiplicacion */
-( "*" ) {lexeme=yytext(); return Multiplicacion;}
-
-/* Operador Division */
-( "/" ) {lexeme=yytext(); return Division;}
-
-/* Operadores logicos */
-( "&&" | "||" | "!" | "&" | "|" ) {lexeme=yytext(); return Op_logico;}
-
-/*Operadores Relacionales */
-( ">" | "<" | "==" | "!=" | ">=" | "<=" | "<<" | ">>" ) {lexeme = yytext(); return Op_relacional;}
-
-/* Operadores Atribucion */
-( "+=" | "-="  | "*=" | "/=" | "%=" ) {lexeme = yytext(); return Op_atribucion;}
-
-/* Operadores Incremento y decremento */
-( "++" | "--" ) {lexeme = yytext(); return Op_incremento;}
-
-/*Operadores Booleanos*/
-(true | false)      {lexeme = yytext(); return Op_booleano;}
-
-/* Parentesis de apertura */
-( "(" ) {lexeme=yytext(); return Parentesis_a;}
-
-/* Parentesis de cierre */
-( ")" ) {lexeme=yytext(); return Parentesis_c;}
-
-/* Llave de apertura */
-( "{" ) {lexeme=yytext(); return Llave_a;}
-
-/* Llave de cierre */
-( "}" ) {lexeme=yytext(); return Llave_c;}
-
-/* Corchete de apertura */
-( "[" ) {lexeme = yytext(); return Corchete_a;}
-
-/* Corchete de cierre */
-( "]" ) {lexeme = yytext(); return Corchete_c;}
-
-/* Marcador de inicio de algoritmo */
-( "main" ) {lexeme=yytext(); return Main;}
-
-/* Punto y coma */
-( ";" ) {lexeme=yytext(); return P_coma;}
-
-/* Numero */
-("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}
-
-/* simbolos */
-( "#" )     {lexeme=yytext(); return Numeral;}
-( "$" )     {lexeme=yytext(); return Dolar;}
-( "/" )     {lexeme=yytext(); return CierreDiag;}
-( "<" )     {lexeme=yytext(); return AperturaE;}
-( ">" )     {lexeme=yytext(); return CierreE;}
-( "!" )     {lexeme=yytext(); return Admiracion;}
-( "=" )     {lexeme=yytext(); return Igual;}
-/*
-( "\"" )    {lexeme=yytext(); return Comillas;} */
-
-/* Palabras reservadas*/
-( "p" )     {lexeme=yytext(); return Parrafo;}
-( "en" )    {lexeme=yytext(); return En;}
-( "es" )    {lexeme=yytext(); return Es;}
-( "img" )  {lexeme=yytext(); return Img;}
-( "src" )  {lexeme=yytext(); return Src;}
-( "alt" )  {lexeme=yytext(); return Alt;}
-( "html" )  {lexeme=yytext(); return Html;}
-( "head" )  {lexeme=yytext(); return Head;}
-( "title" ) {lexeme=yytext(); return Title;}
-( "body" )  {lexeme=yytext(); return Body;}
-( "div" )   {lexeme=yytext(); return Div;}
-( "align" ) {lexeme=yytext(); return Align;}
-( "width" ) {lexeme=yytext(); return Width;}
-( "lang" )  {lexeme=yytext(); return Lang;}
-( "left" )  {lexeme=yytext(); return Left;}
-( "right" ) {lexeme=yytext(); return Right;}
-( "center" ) {lexeme=yytext(); return Center;}
-( "justify" )   {lexeme=yytext(); return Justify;}
-( "DOCTYPE" )   {lexeme=yytext(); return Doctype;}
-
-/* Identificador */
-{L}({L}|{D})* {lexeme=yytext(); return Identificador;}
-
-[\"] {
-            String tmp = cadena; //+ "\"";
-            cadena = "";
-            yybegin(YYINITIAL);
-            return new Symbol(sym.CADENA, (yyline + 1), (yycolumn + 1), tmp);
-}
-
-/* Error de analisis */
- . {return ERROR;}
+//---REGEX
+    <YYINITIAL> "\"" {
+        yybegin(CADENA);
+        //cadena += "\"";
+        tamano = 0;
+        inicio = yychar;
+    }
+    <YYINITIAL> "#" {
+        yybegin(COMLINEA);
+        comL += "#";
+        tamano = 0;
+        inicio = yychar;
+    }
+    <YYINITIAL> "#*" {
+        yybegin(COMMULTI);
+        comM += "#*";
+        tamano = 0;
+        inicio = yychar;
+    }
+    <YYINITIAL> {Espacios} {
+        /*SE OMITEN LOS ESPACIOS*/
+    }
+    <YYINITIAL> {Enter} {
+        /*FUNCIONA COMO DELIMITADOR EN VEZ DEL PUNTO Y COMA*/
+        //GUI.listaTokens.add(new Token(yytext(), "Numero", (yyline + 1), (yycolumn + 1)));
+        //resaltar.pintarMorado(yychar, yylength());
+        //return new Symbol(sym.Enter, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    // <YYINITIAL> {Entero} {
+    //     GUI.listaTokens.add(new Token(yytext(), "Integer", (yyline + 1), (yycolumn + 1)));
+    //     resaltar.pintarMorado(yychar, yylength());
+    //     return new Symbol(sym.Entero, (yyline + 1), (yycolumn + 1), yytext());
+    // }
+    // <YYINITIAL> {Flotante} {
+    //     GUI.listaTokens.add(new Token(yytext(), "Numeric", (yyline + 1), (yycolumn + 1)));
+    //     resaltar.pintarMorado(yychar, yylength());
+    //     return new Symbol(sym.Flotante, (yyline + 1), (yycolumn + 1), yytext());
+    // }
+    <YYINITIAL> {Ident} {
+        GUI.listaTokens.add(new Token(yytext(), "Identificador", (yyline + 1), (yycolumn + 1)));
+        resaltar.pintarRojo(yychar, yylength());
+        return new Symbol(sym.Ident, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> . {
+        GUI.errores.add(new NodoError(yytext(), (yyline + 1), (yycolumn + 1), "Léxico", "Caracter no valido."));
+    }
 
 //---ESTADOS
     <CADENA> {//EL CODIGO ESCRITO ES PARA GUARDAR LA CADENA; SE DEBE DECLARAR LOS ESTADOS Y VARIABLES EN JFLEX Y CUP
@@ -190,6 +222,8 @@ espacio=[ ,\t,\r]+
             String tmp = cadena; //+ "\"";
             cadena = "";
             yybegin(YYINITIAL);
+            resaltar.pintarAnaranjado(inicio, tamano + 2);
+            GUI.listaTokens.add(new Token(tmp, "Cadena", (yyline + 1), (yycolumn + 1)));
             return new Symbol(sym.CADENA, (yyline + 1), (yycolumn + 1), tmp);
         }
         . {
@@ -204,6 +238,8 @@ espacio=[ ,\t,\r]+
             String tmp = comL;
             comL = "";
             yybegin(YYINITIAL);
+            resaltar.pintarGris(inicio, tamano + 2);
+            GUI.listaTokens.add(new Token(tmp, "Comentario de linea", (yyline + 1), (yycolumn + 1)));
         }
         [^\r\n]* {//PUEDE NO HACERSE NADA
             comL += yytext();
@@ -216,6 +252,8 @@ espacio=[ ,\t,\r]+
             String tmp = comM + "*#";
             comM = "";
             yybegin(YYINITIAL);
+            resaltar.pintarGris(inicio, tamano + 4);
+            GUI.listaTokens.add(new Token(tmp, "Comentario multilinea", (yyline + 1), (yycolumn + 1)));
         }
         "#" {
             comM += yytext();
