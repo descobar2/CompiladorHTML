@@ -1,8 +1,6 @@
 package compiladorhtml;
 
 import java_cup.runtime.Symbol;
-import GUI.GUI;
-import GUI.ResaltarTokens;
 import Nodos.NodoError;
 import Nodos.Token;
 
@@ -14,7 +12,6 @@ import Nodos.Token;
     String comM = "";
     int inicio = 0;
     int tamano = 0;
-    public ResaltarTokens resaltar = new ResaltarTokens();
 %}
 
 %cup
@@ -30,7 +27,7 @@ import Nodos.Token;
 %ignorecase
 
 //RESERVADAS--------------------------------------------------------------------
-//---SímboloS
+//---SIMBOLOS
     Numeral = "#"
     Dolar = "$"
     CierreDiag = "/"
@@ -169,22 +166,18 @@ import Nodos.Token;
     <YYINITIAL> {Enter} {
         /*FUNCIONA COMO DELIMITADOR EN VEZ DEL PUNTO Y COMA*/
         //GUI.listaTokens.add(new Token(yytext(), "Numero", (yyline + 1), (yycolumn + 1)));
-        //resaltar.pintarMorado(yychar, yylength());
         //return new Symbol(sym.Enter, (yyline + 1), (yycolumn + 1), yytext());
     }
     // <YYINITIAL> {Entero} {
     //     GUI.listaTokens.add(new Token(yytext(), "Integer", (yyline + 1), (yycolumn + 1)));
-    //     resaltar.pintarMorado(yychar, yylength());
     //     return new Symbol(sym.Entero, (yyline + 1), (yycolumn + 1), yytext());
     // }
     // <YYINITIAL> {Flotante} {
     //     GUI.listaTokens.add(new Token(yytext(), "Numeric", (yyline + 1), (yycolumn + 1)));
-    //     resaltar.pintarMorado(yychar, yylength());
     //     return new Symbol(sym.Flotante, (yyline + 1), (yycolumn + 1), yytext());
     // }
     <YYINITIAL> {Ident} {
         GUI.listaTokens.add(new Token(yytext(), "Identificador", (yyline + 1), (yycolumn + 1)));
-        resaltar.pintarRojo(yychar, yylength());
         return new Symbol(sym.Ident, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> . {
@@ -222,7 +215,6 @@ import Nodos.Token;
             String tmp = cadena; //+ "\"";
             cadena = "";
             yybegin(YYINITIAL);
-            resaltar.pintarAnaranjado(inicio, tamano + 2);
             GUI.listaTokens.add(new Token(tmp, "Cadena", (yyline + 1), (yycolumn + 1)));
             return new Symbol(sym.CADENA, (yyline + 1), (yycolumn + 1), tmp);
         }
@@ -238,7 +230,6 @@ import Nodos.Token;
             String tmp = comL;
             comL = "";
             yybegin(YYINITIAL);
-            resaltar.pintarGris(inicio, tamano + 2);
             GUI.listaTokens.add(new Token(tmp, "Comentario de linea", (yyline + 1), (yycolumn + 1)));
         }
         [^\r\n]* {//PUEDE NO HACERSE NADA
@@ -252,7 +243,6 @@ import Nodos.Token;
             String tmp = comM + "*#";
             comM = "";
             yybegin(YYINITIAL);
-            resaltar.pintarGris(inicio, tamano + 4);
             GUI.listaTokens.add(new Token(tmp, "Comentario multilinea", (yyline + 1), (yycolumn + 1)));
         }
         "#" {

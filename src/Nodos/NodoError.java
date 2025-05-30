@@ -1,4 +1,4 @@
-package nodos;
+package Nodos;
 
 public class NodoError {
 

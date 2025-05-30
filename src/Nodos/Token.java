@@ -1,4 +1,4 @@
-package nodos;
+package Nodos;
 
 public class Token {
     private String lexema;
