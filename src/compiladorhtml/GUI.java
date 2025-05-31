@@ -250,7 +250,7 @@ public class GUI extends javax.swing.JFrame {
         DefaultTableModel modeloErrores = (DefaultTableModel) tablaErrores.getModel();
         modeloErrores.setRowCount(0);
         modeloTokens.setRowCount(0);
-        
+
         try {
             scanner scan = new scanner(new StringReader(txtEntrada.getText()));
             parser parser = new parser(scan);//SE CREA UN OBJETO DE ANALISIS SINTACTICO
@@ -389,18 +389,6 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
-    public String getTokenName(Symbol symbol) {
-        try {
-            for (Field field : sym.class.getFields()) {
-                if (field.getType() == int.class && field.getInt(null) == symbol.sym) {
-                    return field.getName();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "SIMBOLO_DESCONOCIDO_" + symbol.sym;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizarLex;
