@@ -170,6 +170,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        txtNombreArchivo.setEditable(false);
         txtNombreArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreArchivoActionPerformed(evt);
