@@ -24,7 +24,6 @@ import Nodos.Token;
 %state CADENA
 %state COMLINEA
 %state COMMULTI
-//%ignorecase
 
 //RESERVADAS--------------------------------------------------------------------
 //---SIMBOLOS
@@ -37,32 +36,48 @@ import Nodos.Token;
     CierreE = ">"
     Admiracion = "!"
     
-//---RESERVADAS
+//---RESERVADAS (orden importante: más específicas primero)
+    Doctype = "DOCTYPE"
     Html = "html"
     Head = "head"
     Title = "title"
     Body = "body"
     Div = "div"
     Align = "align"
-    Doctype = "DOCTYPE"
     Lang = "lang"
     Parrafo = "p"
     Imagen = "img"
     Source = "src"
     Alt = "alt"
     Width = "width"
+    Left = "left"
+    Right = "right"
+    Center = "center"
+    Justify = "justify"
+    Middle = "middle"
 
 //---REGEX
     Enter = \r|\n|\r\n|\u2028|\u2029|\000B|\000c|\0085
-    // Entero = [0-9]+
     Espacios = [\ \t\f\b\r\n]
-    // Flotante = [0-9]+[.][0-9]+
-    Ident = ([A-Za-zñÑÁáÉéÍíÓóÚú]|("."[._A-Za-zñÑÁáÉéÍíÓóÚú]))[._0-9A-Za-zñÑÁáÉéÍíÓóÚú]*
+    Ident = [A-Za-zñÑÁáÉéÍíÓóÚú][._0-9A-Za-zñÑÁáÉéÍíÓóÚú]*
+    Texto = [A-Za-zñÑÁáÉéÍíÓóÚú0-9\s\.\_\-]+
 
 %%
 //TOKENS------------------------------------------------------------------------
 
-//---SímboloS
+//---COMENTARIOS (deben ir primero para evitar conflictos)
+    <YYINITIAL> "#*" {
+        yybegin(COMMULTI);
+        comM = "#*";
+        tamano = 0;
+        inicio = yychar;
+    }
+    <YYINITIAL> "#"[^\r\n]* {
+        GUI.listaTokens.add(new Token(yytext(), "Comentario de linea", (yyline + 1), (yycolumn + 1)));
+        /* Los comentarios se ignoran, no se retornan como tokens */
+    }
+
+//---SÍMBOLOS
     <YYINITIAL> {Asignar} {
         GUI.listaTokens.add(new Token(yytext(), "Asignar", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Asignar, (yyline + 1), (yycolumn + 1), yytext());
@@ -96,7 +111,11 @@ import Nodos.Token;
         return new Symbol(sym.Admiracion, (yyline + 1), (yycolumn + 1), yytext());
     }
 
-//---RESERVADAS
+//---RESERVADAS (orden importante: palabras más específicas primero)
+    <YYINITIAL> {Doctype} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Doctype, (yyline + 1), (yycolumn + 1), yytext());
+    }
     <YYINITIAL> {Html} {
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Html, (yyline + 1), (yycolumn + 1), yytext());
@@ -121,10 +140,6 @@ import Nodos.Token;
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Align, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Doctype} {
-        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Doctype, (yyline + 1), (yycolumn + 1), yytext());
-    }
     <YYINITIAL> {Lang} {
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Lang, (yyline + 1), (yycolumn + 1), yytext());
@@ -135,11 +150,11 @@ import Nodos.Token;
     }
     <YYINITIAL> {Imagen} {
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Imagen, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Img, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> {Source} {
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Source, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Src, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> {Alt} {
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
@@ -149,23 +164,31 @@ import Nodos.Token;
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Width, (yyline + 1), (yycolumn + 1), yytext());
     }
+    <YYINITIAL> {Left} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Left, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Right} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Right, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Center} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Center, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Justify} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Justify, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Middle} {
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Middle, (yyline + 1), (yycolumn + 1), yytext());
+    }
 
 //---REGEX
     <YYINITIAL> "\"" {
         yybegin(CADENA);
-        //cadena += "\"";
-        tamano = 0;
-        inicio = yychar;
-    }
-    <YYINITIAL> "#" {
-        yybegin(COMLINEA);
-        comL += "#";
-        tamano = 0;
-        inicio = yychar;
-    }
-    <YYINITIAL> "#*" {
-        yybegin(COMMULTI);
-        comM += "#*";
+        cadena = "";
         tamano = 0;
         inicio = yychar;
     }
@@ -174,17 +197,11 @@ import Nodos.Token;
     }
     <YYINITIAL> {Enter} {
         /*FUNCIONA COMO DELIMITADOR EN VEZ DEL PUNTO Y COMA*/
-        //GUI.listaTokens.add(new Token(yytext(), "Numero", (yyline + 1), (yycolumn + 1)));
-        //return new Symbol(sym.Enter, (yyline + 1), (yycolumn + 1), yytext());
     }
-    // <YYINITIAL> {Entero} {
-    //     GUI.listaTokens.add(new Token(yytext(), "Integer", (yyline + 1), (yycolumn + 1)));
-    //     return new Symbol(sym.Entero, (yyline + 1), (yycolumn + 1), yytext());
-    // }
-    // <YYINITIAL> {Flotante} {
-    //     GUI.listaTokens.add(new Token(yytext(), "Numeric", (yyline + 1), (yycolumn + 1)));
-    //     return new Symbol(sym.Flotante, (yyline + 1), (yycolumn + 1), yytext());
-    // }
+    <YYINITIAL> {Texto} {
+        GUI.listaTokens.add(new Token(yytext(), "Texto", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Texto, (yyline + 1), (yycolumn + 1), yytext());
+    }
     <YYINITIAL> {Ident} {
         GUI.listaTokens.add(new Token(yytext(), "Identificador", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Ident, (yyline + 1), (yycolumn + 1), yytext());
@@ -194,34 +211,29 @@ import Nodos.Token;
     }
 
 //---ESTADOS
-    <CADENA> {//EL CODIGO ESCRITO ES PARA GUARDAR LA CADENA; SE DEBE DECLARAR LOS ESTADOS Y VARIABLES EN JFLEX Y CUP
+    <CADENA> {
         (\\r) {
             cadena += "\r";
             tamano += 2;
-            //System.out.println("-> Retorno de carrete");
         }
         (\\n) {
             cadena += "\n";
             tamano += 2;
-            //System.out.println("-> Salto de linea");
         }
         (\\t) {
             cadena += "\t";
             tamano += 2;
-            //System.out.println("-> Tabulador");
         }
         (\\\") {
             cadena += "\"";
             tamano += 2;
-            //System.out.println("-> Comilla");
         }
         (\\\\) {
             cadena += "\\";
             tamano += 2;
-            //System.out.println("-> Diagonal invertida");
         }
         [\"] {
-            String tmp = cadena; //+ "\"";
+            String tmp = cadena;
             cadena = "";
             yybegin(YYINITIAL);
             GUI.listaTokens.add(new Token(tmp, "Cadena", (yyline + 1), (yycolumn + 1)));
@@ -230,39 +242,17 @@ import Nodos.Token;
         . {
             cadena += yytext();
             tamano += yylength();
-            //System.out.println("-> Agregar");
         }
     }
 
-    <COMLINEA> {//EL CODIGO ESCRITO ES PARA GUARDAR EL COMENTARIO; SE DEBE DECLARAR LOS ESTADOS Y VARIABLES EN JFLEX Y CUP
-        [\r\n] {//PUEDE SOLO REGRESAR AL ESTADO YYINITIAL.
-            String tmp = comL;
-            comL = "";
-            yybegin(YYINITIAL);
-            GUI.listaTokens.add(new Token(tmp, "Comentario de linea", (yyline + 1), (yycolumn + 1)));
-        }
-        [^\r\n]* {//PUEDE NO HACERSE NADA
-            comL += yytext();
-            tamano += yylength();
-        }
-    }
-
-    <COMMULTI> {//EL CODIGO ESCRITO ES PARA GUARDAR EL COMENTARIO; SE DEBE DECLARAR LOS ESTADOS Y VARIABLES EN JFLEX Y CUP
+    <COMMULTI> {
         "*#" {
             String tmp = comM + "*#";
             comM = "";
             yybegin(YYINITIAL);
             GUI.listaTokens.add(new Token(tmp, "Comentario multilinea", (yyline + 1), (yycolumn + 1)));
         }
-        "#" {
-            comM += yytext();
-            tamano += yylength();
-        }
-        "*" {
-            comM += yytext();
-            tamano += yylength();
-        }
-        [^"*#"]* {
+        . {
             comM += yytext();
             tamano += yylength();
         }
