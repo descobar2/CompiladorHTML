@@ -266,7 +266,7 @@ public class GUI extends javax.swing.JFrame {
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarLexActionPerformed
         try {
             scanner scan = new scanner(new StringReader(txtEntrada.getText()));
-            scanner scan2 = new scanner(new StringReader(txtEntrada.getText()));
+            scanner scan2 = scan;
             parser parser = new parser(scan);//SE CREA UN OBJETO DE ANALISIS SINTACTICO
             parser.parse();//SE REALIZA EL ANALISIS SINTACTICO
             
