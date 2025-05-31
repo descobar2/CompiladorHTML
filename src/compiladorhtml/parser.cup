@@ -2,7 +2,7 @@ package compiladorhtml;
 
 import java_cup.runtime.Symbol;
 
-parser code
+parser code 
 {:
     private Symbol s;
     
@@ -12,18 +12,99 @@ parser code
 
     public Symbol getS(){
         return this.s;
-}
+    }
 :};
 
-terminal Asignar, Coma, Numeral, Dolar, CierreDiag,AperturaE, CierreE, Admiracion, Igual,
-    Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Imagen,
-    Source, Alt, Width, Ident, CADENA
-;
-non terminal INICIO
-;
+/* Terminals (tokens from lexer) */
+terminal Asignar, Coma, Numeral, Dolar, CierreDiag, AperturaE, CierreE, Admiracion,
+    Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Img,
+    Src, Alt, Width, Left, Right, Center, Justify, Texto, Middle, Ident, CADENA;
 
+/* Non-terminals */
+non terminal INICIO, HTML_DOC, DOCTYPE, HTML_TAG, HEAD_TAG, TITLE_TAG, BODY_TAG,
+    DIV_ELEMENT, P_ELEMENT, IMG_ELEMENT, ATRIBUTOS, ATRIBUTO, VALOR_ALIGN, 
+    BODY_CONTENT, TEXT_CONTENT, LISTA_ATRIBUTOS;  
+
+/* Starting symbol */
 start with INICIO;
 
+/* Grammar with reduced conflicts */
 INICIO ::= 
-    Html
+    HTML_DOC |
+    DOCTYPE HTML_DOC
+;
+
+DOCTYPE ::=
+    Dolar Admiracion Doctype Html Numeral
+;
+
+HTML_DOC ::= 
+    HTML_TAG
+;
+
+HTML_TAG ::=
+    Dolar Html Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral |
+    Dolar Html LISTA_ATRIBUTOS Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral
+;
+
+HEAD_TAG ::=
+    Dolar Head Numeral TITLE_TAG Dolar CierreDiag Head Numeral
+;
+
+TITLE_TAG ::=
+    Dolar Title Numeral TEXT_CONTENT Dolar CierreDiag Title Numeral
+;
+
+BODY_TAG ::=
+    Dolar Body Numeral BODY_CONTENT Dolar CierreDiag Body Numeral |
+    Dolar Body LISTA_ATRIBUTOS Numeral BODY_CONTENT Dolar CierreDiag Body Numeral
+;
+
+BODY_CONTENT ::=
+    BODY_CONTENT DIV_ELEMENT |
+    BODY_CONTENT P_ELEMENT |
+    BODY_CONTENT TEXT_CONTENT |
+    DIV_ELEMENT |
+    P_ELEMENT |
+    TEXT_CONTENT
+;
+
+DIV_ELEMENT ::=
+    Dolar Div LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral |
+    Dolar Div Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral
+;
+
+P_ELEMENT ::=
+    Dolar Parrafo Numeral TEXT_CONTENT Dolar CierreDiag Parrafo Numeral |
+    Dolar Parrafo LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Parrafo Numeral |
+    Dolar Parrafo Numeral IMG_ELEMENT Dolar CierreDiag Parrafo Numeral |
+    Dolar Parrafo LISTA_ATRIBUTOS Numeral IMG_ELEMENT Dolar CierreDiag Parrafo Numeral
+;
+
+IMG_ELEMENT ::= 
+    Dolar Img LISTA_ATRIBUTOS CierreDiag Numeral
+;
+
+LISTA_ATRIBUTOS ::=
+    LISTA_ATRIBUTOS ATRIBUTO |
+    ATRIBUTO
+;
+
+ATRIBUTO ::= 
+    Align Asignar VALOR_ALIGN |
+    Lang Asignar CADENA |
+    Src Asignar CADENA |
+    Alt Asignar CADENA |
+    Width Asignar CADENA |
+    Ident Asignar CADENA
+;
+
+VALOR_ALIGN ::=
+    Left | Right | Center | Justify | Middle | CADENA
+;
+
+TEXT_CONTENT ::=
+    Texto |
+    CADENA |
+    Ident
 ;
