@@ -266,11 +266,15 @@ public class GUI extends javax.swing.JFrame {
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarLexActionPerformed
         try {
             scanner scan = new scanner(new StringReader(txtEntrada.getText()));
+            scanner scan2 = new scanner(new StringReader(txtEntrada.getText()));
+            parser parser = new parser(scan);//SE CREA UN OBJETO DE ANALISIS SINTACTICO
+            parser.parse();//SE REALIZA EL ANALISIS SINTACTICO
+            
             DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
             modelo.setRowCount(0);
 
             while (true) {
-                Symbol symbol = scan.next_token();
+                Symbol symbol = scan2.next_token();
 
                 if (symbol.value == null) {
                     break;
@@ -278,9 +282,6 @@ public class GUI extends javax.swing.JFrame {
 
                 modelo.addRow(new Object[]{symbol.value, getTokenName(symbol), symbol.left, symbol.right});
             }
-
-            parser parser = new parser(scan);//SE CREA UN OBJETO DE ANALISIS SINTACTICO
-            parser.parse();//SE REALIZA EL ANALISIS SINTACTICO
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         } finally {

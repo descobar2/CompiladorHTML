@@ -66,6 +66,7 @@ INICIO ::=
 
 DOCTYPE ::=
     Dolar Admiracion Doctype Html Numeral
+    | error
 ;
 
 HTML_DOC ::= 
@@ -75,19 +76,23 @@ HTML_DOC ::=
 HTML_TAG ::=
     Dolar Html Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral |
     Dolar Html LISTA_ATRIBUTOS Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral
+    | error
 ;
 
 HEAD_TAG ::=
     Dolar Head Numeral TITLE_TAG Dolar CierreDiag Head Numeral
+    | error
 ;
 
 TITLE_TAG ::=
     Dolar Title Numeral TEXT_CONTENT Dolar CierreDiag Title Numeral
+    | error
 ;
 
 BODY_TAG ::=
     Dolar Body Numeral BODY_CONTENT Dolar CierreDiag Body Numeral |
     Dolar Body LISTA_ATRIBUTOS Numeral BODY_CONTENT Dolar CierreDiag Body Numeral
+    | error
 ;
 
 BODY_CONTENT ::=
@@ -97,6 +102,7 @@ BODY_CONTENT ::=
     DIV_ELEMENT |
     P_ELEMENT |
     TEXT_CONTENT
+    | error
 ;
 
 DIV_ELEMENT ::=
@@ -127,6 +133,7 @@ ATRIBUTO ::=
     Alt Asignar CADENA |
     Width Asignar CADENA |
     Ident Asignar CADENA
+    | error
 ;
 
 VALOR_ALIGN ::=
