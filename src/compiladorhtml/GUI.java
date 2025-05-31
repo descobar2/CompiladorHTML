@@ -56,7 +56,7 @@ public class GUI extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("Analizador Sintáctico");
+        jLabel1.setText("Resutado de análisis sintáctico y errores encontrados");
 
         txtEntrada.setColumns(20);
         txtEntrada.setRows(5);

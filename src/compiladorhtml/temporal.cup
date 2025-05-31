@@ -1,0 +1,107 @@
+package compiladorhtml;
+
+import java_cup.runtime.Symbol;
+
+parser code 
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+    }
+:};
+
+/* Terminals (tokens from lexer) */
+terminal Numeral, Dolar, CierreDiag, Admiracion, Igual,
+    Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Img,
+    Src, Alt, Width, Left, Right, Center, Justify, Texto, Middle;
+
+/* Non-terminals */
+non terminal INICIO, HTML_DOC, DOCTYPE, HTML_TAG, HEAD_TAG, TITLE_TAG, BODY_TAG,
+    DIV_ELEMENT, P_ELEMENT, IMG_ELEMENT, ATRIBUTOS, ATRIBUTO, VALOR_ALIGN, 
+    BODY_CONTENT, P_CONTENT, TEXT_CONTENT;  
+
+/* Starting symbol */
+start with INICIO;
+
+/* Productions */
+INICIO ::= 
+    HTML_DOC |
+    DOCTYPE HTML_DOC
+;
+
+DOCTYPE ::=
+    Dolar Admiracion Doctype Html Numeral
+;
+
+HTML_TAG ::=
+    Dolar Html Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral |
+    Dolar Html ATRIBUTOS Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral
+;
+
+HEAD_TAG ::=
+    Dolar Head Numeral TITLE_TAG Dolar CierreDiag Head Numeral
+;
+
+TITLE_TAG ::=
+    Dolar Title Numeral TEXT_CONTENT Dolar CierreDiag Title Numeral
+;
+
+BODY_TAG ::=
+    Dolar Body Numeral BODY_CONTENT Dolar CierreDiag Body Numeral
+;
+
+BODY_CONTENT ::=
+    DIV_ELEMENT BODY_CONTENT |
+    P_ELEMENT BODY_CONTENT |
+    DIV_ELEMENT |
+    P_ELEMENT
+;
+
+DIV_ELEMENT ::=
+    Dolar Div ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral
+;
+
+P_ELEMENT ::=
+    Dolar Parrafo Numeral P_CONTENT Dolar CierreDiag Parrafo Numeral
+;
+
+P_CONTENT ::=
+    TEXT_CONTENT P_CONTENT |
+    IMG_ELEMENT P_CONTENT |
+    TEXT_CONTENT |
+    IMG_ELEMENT
+;
+
+IMG_ELEMENT ::= 
+    Dolar Img ATRIBUTOS CierreDiag Numeral
+;
+
+ATRIBUTOS ::=
+    ATRIBUTO ATRIBUTOS |
+    ATRIBUTO
+;
+
+ATRIBUTO ::= 
+    Align Igual VALOR_ALIGN |
+    Lang Igual Texto |
+    Src Igual Texto |
+    Alt Igual Texto |
+    Width Igual Texto
+;
+
+VALOR_ALIGN ::=
+    Left | Right | Center | Justify | Middle
+;
+
+TEXT_CONTENT ::=
+    Texto
+;
+
+HTML_DOC ::= 
+    HTML_TAG
+;
