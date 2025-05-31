@@ -22,8 +22,6 @@ import Nodos.Token;
 %column
 %full
 %state CADENA
-%state COMLINEA
-%state COMMULTI
 
 //RESERVADAS--------------------------------------------------------------------
 //---SIMBOLOS
@@ -64,18 +62,6 @@ import Nodos.Token;
 
 %%
 //TOKENS------------------------------------------------------------------------
-
-//---COMENTARIOS (deben ir primero para evitar conflictos)
-    <YYINITIAL> "#*" {
-        yybegin(COMMULTI);
-        comM = "#*";
-        tamano = 0;
-        inicio = yychar;
-    }
-    <YYINITIAL> "#"[^\r\n]* {
-        GUI.listaTokens.add(new Token(yytext(), "Comentario de linea", (yyline + 1), (yycolumn + 1)));
-        /* Los comentarios se ignoran, no se retornan como tokens */
-    }
 
 //---SÍMBOLOS
     <YYINITIAL> {Asignar} {
@@ -198,13 +184,13 @@ import Nodos.Token;
     <YYINITIAL> {Enter} {
         /*FUNCIONA COMO DELIMITADOR EN VEZ DEL PUNTO Y COMA*/
     }
-    <YYINITIAL> {Texto} {
-        GUI.listaTokens.add(new Token(yytext(), "Texto", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Texto, (yyline + 1), (yycolumn + 1), yytext());
-    }
     <YYINITIAL> {Ident} {
         GUI.listaTokens.add(new Token(yytext(), "Identificador", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Ident, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Texto} {
+        GUI.listaTokens.add(new Token(yytext(), "Texto", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Texto, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> . {
         GUI.errores.add(new NodoError(yytext(), (yyline + 1), (yycolumn + 1), "Léxico", "Caracter no valido."));
@@ -242,21 +228,5 @@ import Nodos.Token;
         . {
             cadena += yytext();
             tamano += yylength();
-        }
-    }
-
-    <COMMULTI> {
-        "*#" {
-            String tmp = comM + "*#";
-            comM = "";
-            yybegin(YYINITIAL);
-            GUI.listaTokens.add(new Token(tmp, "Comentario multilinea", (yyline + 1), (yycolumn + 1)));
-        }
-        . {
-            comM += yytext();
-            tamano += yylength();
-        }
-        <<EOF>> {
-            GUI.errores.add(new NodoError(yytext(), (yyline + 1), (yycolumn + 1), "Léxico", "Se esperaba cierre de comentario."));
         }
     }

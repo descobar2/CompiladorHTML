@@ -1,17 +1,47 @@
 package compiladorhtml;
-
+import Nodos.NodoError;
 import java_cup.runtime.Symbol;
 
 parser code 
 {:
     private Symbol s;
-    
-    public void syntax_error(Symbol s){
-        this.s = s;
-    }
+    String descripError = "";
 
     public Symbol getS(){
         return this.s;
+    }
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+        String desc_error;
+        
+        String valor = (s != null && s.value != null) ? s.value.toString() : "desconocido";
+        int linea = (s != null) ? Integer.parseInt(Integer.toString(s.left)) : -1;
+        int columna = (s != null) ? Integer.parseInt(Integer.toString(s.right)) : -1;
+
+        desc_error = "Error sintáctico recuperable: '" + valor
+                + "', en línea " + linea + " y columna " + columna;
+
+        System.err.println(desc_error);
+
+        GUI.errores.add(new NodoError(valor, linea, columna, "Sintáctico", "Error recuperable"));
+        descripError = "";
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        String valor = (s != null && s.value != null) ? s.value.toString() : "desconocido";
+        int linea = (s != null) ? Integer.parseInt(Integer.toString(s.left)) : -1;
+        int columna = (s != null) ? Integer.parseInt(Integer.toString(s.right)) : -1;
+
+
+        String desc_error = "Error sintáctico irrecuperable: '" + valor +
+                "', en línea " + linea + " y columna " + columna;
+
+        System.err.println(desc_error);
+
+        GUI.errores.add(new NodoError(valor, linea, columna, "Sintáctico", "Error irrecuperable"));
+        // Lanza una excepción si quieres detener el análisis
+        throw new Exception("Fin del análisis debido a error irrecuperable.");
     }
 :};
 
