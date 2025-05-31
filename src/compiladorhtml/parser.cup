@@ -66,7 +66,7 @@ INICIO ::=
 
 DOCTYPE ::=
     Dolar Admiracion Doctype Html Numeral
-    | error
+    | error Numeral
 ;
 
 HTML_DOC ::= 
@@ -74,25 +74,25 @@ HTML_DOC ::=
 ;
 
 HTML_TAG ::=
-    Dolar Html Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral |
-    Dolar Html LISTA_ATRIBUTOS Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral
-    | error
+    Dolar Html Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral 
+    | Dolar Html LISTA_ATRIBUTOS Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral
+    | error Numeral
 ;
 
 HEAD_TAG ::=
     Dolar Head Numeral TITLE_TAG Dolar CierreDiag Head Numeral
-    | error
+    | error Numeral
 ;
 
 TITLE_TAG ::=
     Dolar Title Numeral TEXT_CONTENT Dolar CierreDiag Title Numeral
-    | error
+    | error Numeral
 ;
 
 BODY_TAG ::=
     Dolar Body Numeral BODY_CONTENT Dolar CierreDiag Body Numeral |
     Dolar Body LISTA_ATRIBUTOS Numeral BODY_CONTENT Dolar CierreDiag Body Numeral
-    | error
+    | error Numeral
 ;
 
 BODY_CONTENT ::=
@@ -102,18 +102,16 @@ BODY_CONTENT ::=
     DIV_ELEMENT |
     P_ELEMENT |
     TEXT_CONTENT
-    | error
+    | error Numeral
 ;
 
 DIV_ELEMENT ::=
-    Dolar Div LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral |
-    Dolar Div Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral
+    Dolar Div LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral
 ;
 
 P_ELEMENT ::=
     Dolar Parrafo Numeral TEXT_CONTENT Dolar CierreDiag Parrafo Numeral |
     Dolar Parrafo LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Parrafo Numeral |
-    Dolar Parrafo Numeral IMG_ELEMENT Dolar CierreDiag Parrafo Numeral |
     Dolar Parrafo LISTA_ATRIBUTOS Numeral IMG_ELEMENT Dolar CierreDiag Parrafo Numeral
 ;
 
@@ -122,8 +120,8 @@ IMG_ELEMENT ::=
 ;
 
 LISTA_ATRIBUTOS ::=
-    LISTA_ATRIBUTOS ATRIBUTO |
-    ATRIBUTO
+    LISTA_ATRIBUTOS ATRIBUTO
+    | ATRIBUTO
 ;
 
 ATRIBUTO ::= 
@@ -133,7 +131,7 @@ ATRIBUTO ::=
     Alt Asignar CADENA |
     Width Asignar CADENA |
     Ident Asignar CADENA
-    | error
+    | error Numeral
 ;
 
 VALOR_ALIGN ::=
@@ -141,7 +139,8 @@ VALOR_ALIGN ::=
 ;
 
 TEXT_CONTENT ::=
-    Texto |
-    CADENA |
-    Ident
+    TEXT_CONTENT Ident
+    | TEXT_CONTENT IMG_ELEMENT
+    | IMG_ELEMENT
+    | Ident
 ;

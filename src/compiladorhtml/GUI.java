@@ -1,6 +1,7 @@
 package compiladorhtml;
 
 import Nodos.NodoError;
+import Nodos.Token;
 import static compiladorhtml.CompiladorHTML.generar;
 import java.io.File;
 import java.io.StringReader;
@@ -36,18 +37,16 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtEntrada = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
         tablaSimbolo = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        btnLimpiarSin = new javax.swing.JButton();
-        btnAnalizarSin = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtSintactico = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaErrores = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         btnArchivo = new javax.swing.JButton();
         btnLimpiarLex = new javax.swing.JButton();
@@ -56,9 +55,6 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("Analizador Sintáctico");
 
         txtEntrada.setColumns(20);
         txtEntrada.setRows(5);
@@ -113,41 +109,31 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Salida"));
         jPanel3.setName(""); // NOI18N
-
-        btnLimpiarSin.setText("Limpiar");
-
-        btnAnalizarSin.setText("Analizar");
-        btnAnalizarSin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnalizarSinActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAnalizarSin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLimpiarSin, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAnalizarSin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(btnLimpiarSin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
 
         txtSintactico.setColumns(20);
         txtSintactico.setRows(5);
+        txtSintactico.setEnabled(false);
         jScrollPane4.setViewportView(txtSintactico);
+
+        tablaErrores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Error", "Tipo", "Linea", "Columna"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaErrores);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -155,18 +141,18 @@ public class GUI extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -232,9 +218,6 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(jLabel1))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -246,11 +229,9 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.getAccessibleContext().setAccessibleName("");
@@ -264,38 +245,29 @@ public class GUI extends javax.swing.JFrame {
     }// GEN-LAST:event_txtNombreArchivoActionPerformed
 
     private void btnAnalizarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarLexActionPerformed
+        DefaultTableModel modeloTokens = (DefaultTableModel) tablaSimbolo.getModel();
+        DefaultTableModel modeloErrores = (DefaultTableModel) tablaErrores.getModel();
+        modeloErrores.setRowCount(0);
+        modeloTokens.setRowCount(0);
+        
         try {
             scanner scan = new scanner(new StringReader(txtEntrada.getText()));
-            scanner scan2 = scan;
             parser parser = new parser(scan);//SE CREA UN OBJETO DE ANALISIS SINTACTICO
             parser.parse();//SE REALIZA EL ANALISIS SINTACTICO
-            
-            DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
-            modelo.setRowCount(0);
 
-            while (true) {
-                Symbol symbol = scan2.next_token();
-
-                if (symbol.value == null) {
-                    break;
-                }
-
-                modelo.addRow(new Object[]{symbol.value, getTokenName(symbol), symbol.left, symbol.right});
-            }
+//            for (Token token : listaTokens) {
+//                modeloTokens.addRow(new Object[]{token.getLexema(), token.getTipo(), token.getFila(), token.getColumna()});
+//            }
         } catch (Exception e) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             if (errores.size() > 0) {
-                this.txtSintactico.setText("");
                 for (NodoError error : errores) {
-                    this.txtSintactico
-                            .append(error.getSimbolo() + "; " + error.getTipo() + "; " + error.getDescripcion()
-                                    + "; Fila:" + error.getFila() + "; Col:" + error.getColumna() + "\n");
+                    modeloErrores.addRow(new Object[]{error.getSimbolo(), error.getTipo(), error.getFila(), error.getColumna()});
                 }
-                
-                errores.clear();
             }
-
+            listaTokens.clear();
+            errores.clear();
         }
 
     }// GEN-LAST:event_btnAnalizarLexActionPerformed
@@ -363,10 +335,13 @@ public class GUI extends javax.swing.JFrame {
     }// GEN-LAST:event_btnArchivoActionPerformed
 
     private void btnLimpiarLexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnLimpiarLexActionPerformed
-        DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
-        modelo.setRowCount(0);
-        txtSintactico.setText("");
+        DefaultTableModel modeloSimbolos = (DefaultTableModel) tablaSimbolo.getModel();
+        DefaultTableModel modeloErrores = (DefaultTableModel) tablaErrores.getModel();
+        modeloSimbolos.setRowCount(0);
+        modeloErrores.setRowCount(0);
         this.errores.clear();
+        listaTokens.clear();
+        txtSintactico.setText("");
 
     }// GEN-LAST:event_btnLimpiarLexActionPerformed
 
@@ -428,19 +403,17 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizarLex;
-    private javax.swing.JButton btnAnalizarSin;
     private javax.swing.JButton btnArchivo;
     private javax.swing.JButton btnLimpiarLex;
-    private javax.swing.JButton btnLimpiarSin;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTable tablaSimbolo;
+    private javax.swing.JTable tablaErrores;
+    public static javax.swing.JTable tablaSimbolo;
     private javax.swing.JTextArea txtEntrada;
     private javax.swing.JTextField txtNombreArchivo;
     private javax.swing.JTextArea txtSintactico;
