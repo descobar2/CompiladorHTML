@@ -48,7 +48,7 @@ parser code
 /* Terminals (tokens from lexer) */
 terminal Asignar, Coma, Numeral, Dolar, CierreDiag, AperturaE, CierreE, Admiracion,
     Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Img,
-    Src, Alt, Width, Left, Right, Center, Justify, Texto, Middle, Ident, CADENA;
+    Src, Alt, Width, Left, Right, Center, Justify, Texto, Middle, Entero, PuntoComa, Ident, Numero, CADENA;
 
 /* Non-terminals */
 non terminal INICIO, HTML_DOC, DOCTYPE, HTML_TAG, HEAD_TAG, TITLE_TAG, BODY_TAG,
@@ -130,8 +130,10 @@ ATRIBUTO ::=
     Src Asignar CADENA |
     Alt Asignar CADENA |
     Width Asignar CADENA |
-    Ident Asignar CADENA
-    | error Numeral
+    Ident Asignar CADENA |
+    Entero Ident Asignar Numero PuntoComa
+    | error Numeral 
+    | error PuntoComa
 ;
 
 VALOR_ALIGN ::=

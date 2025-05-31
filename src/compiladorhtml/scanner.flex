@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
     AperturaE = "<"
     CierreE = ">"
     Admiracion = "!"
+    PuntoComa = ";"
     
 //---RESERVADAS (orden importante: más específicas primero)
     Doctype = "DOCTYPE"
@@ -57,11 +58,13 @@ import javax.swing.table.DefaultTableModel;
     Center = "center"
     Justify = "justify"
     Middle = "middle"
+    Entero = "IntEntero"
 
 //---REGEX
     Enter = \r|\n|\r\n|\u2028|\u2029|\000B|\000c|\0085
     Espacios = [\ \t\f\b\r\n]
     Ident = [A-Za-zñÑÁáÉéÍíÓóÚú][._0-9A-Za-zñÑÁáÉéÍíÓóÚú]*
+    Numero=[0-9]+
 
 %%
 //TOKENS------------------------------------------------------------------------
@@ -108,6 +111,11 @@ import javax.swing.table.DefaultTableModel;
         modeloSimbolos.addRow(new Object[]{yytext(), "Admiración", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Admiración", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Admiracion, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Coma} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Coma", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Coma", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Coma, (yyline + 1), (yycolumn + 1), yytext());
     }
 
 //---RESERVADAS (orden importante: palabras más específicas primero)
@@ -201,6 +209,11 @@ import javax.swing.table.DefaultTableModel;
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Middle, (yyline + 1), (yycolumn + 1), yytext());
     }
+    <YYINITIAL> {Entero} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Entero, (yyline + 1), (yycolumn + 1), yytext());
+    }
 
 //---REGEX
     <YYINITIAL> "\"" {
@@ -219,6 +232,11 @@ import javax.swing.table.DefaultTableModel;
         modeloSimbolos.addRow(new Object[]{yytext(), "Identificador", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Identificador", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Ident, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Numero} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Numero", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Numero", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Numero, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> . {
         GUI.errores.add(new NodoError(yytext(), (yyline + 1), (yycolumn + 1), "Léxico", "Caracter no valido."));
