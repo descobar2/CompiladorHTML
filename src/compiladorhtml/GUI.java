@@ -273,52 +273,6 @@ public class GUI extends javax.swing.JFrame {
 
     }// GEN-LAST:event_btnAnalizarLexActionPerformed
 
-    private void btnAnalizarSinActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAnalizarSinActionPerformed
-        try {
-            scanner scan = new scanner(new StringReader(txtEntrada.getText()));
-            DefaultTableModel modelo = (DefaultTableModel) tablaSimbolo.getModel();
-            modelo.setRowCount(0);
-
-            // Limpiar errores anteriores
-            errores.clear();
-
-            while (true) {
-                Symbol symbol = scan.next_token();
-
-                if (symbol.value == null) {
-                    break;
-                }
-
-                modelo.addRow(new Object[]{symbol.value, getTokenName(symbol), symbol.left, symbol.right});
-            }
-
-            // Mostrar errores si los hay - usando una referencia más segura
-            if (errores.size() > 0) {
-                StringBuilder errorText = new StringBuilder();
-                for (NodoError error : errores) {
-                    errorText.append(error.getSimbolo()).append("; ")
-                            .append(error.getTipo()).append("; ")
-                            .append(error.getDescripcion()).append("; Fil:")
-                            .append(error.getFila()).append("; Col:")
-                            .append(error.getColumna()).append("\n");
-                }
-                // Verifica que txtSintactico no sea null
-                if (txtSintactico != null) {
-                    txtSintactico.setText(errorText.toString());
-                }
-            } else {
-                if (txtSintactico != null) {
-                    txtSintactico.setText("Análisis léxico completado sin errores.");
-                }
-            }
-        } catch (Exception e) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, e);
-            if (txtSintactico != null) {
-                txtSintactico.setText("Error durante el análisis: " + e.getMessage());
-            }
-        }
-    }// GEN-LAST:event_btnAnalizarSinActionPerformed
-
     private void btnArchivoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnArchivoActionPerformed
         // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
