@@ -31,34 +31,47 @@ import javax.swing.table.DefaultTableModel;
 //---SIMBOLOS
     Asignar = "="
     Coma = ","
-    Numeral = "#"
-    Dolar = "$"
-    CierreDiag = "/"
-    AperturaE = "<"
-    CierreE = ">"
-    Admiracion = "!"
+    Punto = "."
     PuntoComa = ";"
+    Admiracion = "!"    
+    Pipe = "|"
+    CierreDiag = "/"
+    AperturaE = "("
+    CierreE = ")"
+    LlaveA = "{"
+    LlaveC = "}"
+    CorcheteA = "["
+    CorcheteC = "]"
     
 //---RESERVADAS (orden importante: más específicas primero)
-    Doctype = "DOCTYPE"
-    Html = "html"
-    Head = "head"
-    Title = "title"
-    Body = "body"
-    Div = "div"
-    Align = "align"
-    Lang = "lang"
-    Parrafo = "p"
-    Imagen = "img"
-    Source = "src"
-    Alt = "alt"
-    Width = "width"
-    Left = "left"
-    Right = "\\"right\\""
-    Center = "center"
-    Justify = "justify"
-    Middle = "middle"
-    Entero = "IntEntero"
+    Public = "public"
+    Class = "class"
+    Let = "let"
+    Private = "private"
+    String = "String"
+    Connection = "Connection"
+    Try = "try"
+    Catch = "catch"
+    Class = "Class"
+    ForName = "forName"
+    DriverManager = "DriverManager"
+    GetConnection = "getConnection"
+    ClassNotFoundException = "ClassNotFoundException"
+    SQLException = "SQLException"
+    PrintStackTrace = "printStackTrace"
+    Return = "return"
+    Static = "static"
+    Void = "void"
+    Main = "main"
+    Args = "args"
+    ConnectionMysql = "ConnectionMysql"
+    New = "new"
+    If = "if"
+    Else = "else"
+    Null = "null"
+    System = "System"
+    Out = "Out"
+    Println = "println"
 
 //---REGEX
     Enter = \r|\n|\r\n|\u2028|\u2029|\000B|\000c|\0085
@@ -81,138 +94,198 @@ import javax.swing.table.DefaultTableModel;
         modeloSimbolos.addRow(new Object[]{yytext(), "Coma", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Coma", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.Coma, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Punto} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Punto", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Punto", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Punto, (yyline + 1), (yycolumn + 1), yytext());
     }    
-    <YYINITIAL> {Numeral} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Numeral", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Numeral", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Numeral, (yyline + 1), (yycolumn + 1), yytext());
+    <YYINITIAL> {PuntoComa} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "PuntoComa", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "PuntoComa", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.PuntoComa, (yyline + 1), (yycolumn + 1), yytext());
     }    
-    <YYINITIAL> {Dolar} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Dólar", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Dólar", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Dolar, (yyline + 1), (yycolumn + 1), yytext());
+    <YYINITIAL> {Admiracion} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Admiracion", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Admiracion", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Admiracion, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Pipe} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Pipe", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Pipe", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Pipe, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> {CierreDiag} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Cierre diagonal", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Cierre diagonal", (yyline + 1), (yycolumn + 1)));
+        modeloSimbolos.addRow(new Object[]{yytext(), "CierreDiag", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "CierreDiag", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.CierreDiag, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> {AperturaE} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Apertura de etiqueta", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Apertura de etiqueta", (yyline + 1), (yycolumn + 1)));
+        modeloSimbolos.addRow(new Object[]{yytext(), "AperturaE", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "AperturaE", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.AperturaE, (yyline + 1), (yycolumn + 1), yytext());
     }
     <YYINITIAL> {CierreE} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Cierre de etiqueta", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Cierre de etiqueta", (yyline + 1), (yycolumn + 1)));
+        modeloSimbolos.addRow(new Object[]{yytext(), "CierreE", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "CierreE", (yyline + 1), (yycolumn + 1)));
         return new Symbol(sym.CierreE, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Admiracion} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Admiración", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Admiración", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Admiracion, (yyline + 1), (yycolumn + 1), yytext());
+    <YYINITIAL> {LlaveA} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "LlaveA", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "LlaveA", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.LlaveA, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Coma} {
-        modeloSimbolos.addRow(new Object[]{yytext(), "Coma", (yyline + 1), (yycolumn + 1)});
-        GUI.listaTokens.add(new Token(yytext(), "Coma", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Coma, (yyline + 1), (yycolumn + 1), yytext());
+    <YYINITIAL> {LlaveC} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "LlaveC", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "LlaveC", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.LlaveC, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {CorcheteA} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "CorcheteA", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "CorcheteA", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.CorcheteA, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {CorcheteC} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "CorcheteC", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "CorcheteC", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.CorcheteC, (yyline + 1), (yycolumn + 1), yytext());
     }
 
 //---RESERVADAS (orden importante: palabras más específicas primero)
-    <YYINITIAL> {Doctype} {
+    <YYINITIAL> {Public} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Doctype, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Public, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Html} {
+    <YYINITIAL> {Class} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Html, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Class, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Head} {
+    <YYINITIAL> {Let} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Head, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Let, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Title} {
+    <YYINITIAL> {Private} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Title, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Private, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Body} {
+    <YYINITIAL> {String} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Body, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.String, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Div} {
+    <YYINITIAL> {Connection} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Div, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Connection, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Align} {
+    <YYINITIAL> {Try} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Align, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Try, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Lang} {
+    <YYINITIAL> {Catch} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Lang, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Catch, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Parrafo} {
+    <YYINITIAL> {ForName} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Parrafo, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.ForName, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Imagen} {
+    <YYINITIAL> {DriverManager} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Img, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.DriverManager, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Source} {
+    <YYINITIAL> {GetConnection} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Src, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.GetConnection, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Alt} {
+    <YYINITIAL> {ClassNotFoundException} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Alt, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.ClassNotFoundException, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Width} {
+    <YYINITIAL> {SQLException} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Width, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.SQLException, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Left} {
+    <YYINITIAL> {PrintStackTrace} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Left, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.PrintStackTrace, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Right} {
+    <YYINITIAL> {Return} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Right, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Return, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Center} {
+    <YYINITIAL> {Static} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Center, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Static, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Justify} {
+    <YYINITIAL> {Void} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Justify, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Void, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Middle} {
+    <YYINITIAL> {Main} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Middle, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Main, (yyline + 1), (yycolumn + 1), yytext());
     }
-    <YYINITIAL> {Entero} {
+    <YYINITIAL> {Args} {
         modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
         GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
-        return new Symbol(sym.Entero, (yyline + 1), (yycolumn + 1), yytext());
+        return new Symbol(sym.Args, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {ConnectionMysql} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.ConnectionMysql, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {New} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.New, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {If} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.If, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Else} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Else, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Null} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Null, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {System} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.System, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Out} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Out, (yyline + 1), (yycolumn + 1), yytext());
+    }
+    <YYINITIAL> {Println} {
+        modeloSimbolos.addRow(new Object[]{yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)});
+        GUI.listaTokens.add(new Token(yytext(), "Palabra reservada", (yyline + 1), (yycolumn + 1)));
+        return new Symbol(sym.Println, (yyline + 1), (yycolumn + 1), yytext());
     }
 
 //---REGEX

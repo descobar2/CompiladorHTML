@@ -33,116 +33,69 @@ parser code
         int linea = (s != null) ? Integer.parseInt(Integer.toString(s.left)) : -1;
         int columna = (s != null) ? Integer.parseInt(Integer.toString(s.right)) : -1;
 
-
         String desc_error = "Error sintáctico irrecuperable: '" + valor +
                 "', en línea " + linea + " y columna " + columna;
 
         System.err.println(desc_error);
 
         GUI.errores.add(new NodoError(valor, linea, columna, "Sintáctico", "Error irrecuperable"));
-        // Lanza una excepción si quieres detener el análisis
         throw new Exception("Fin del análisis debido a error irrecuperable.");
     }
 :};
 
 /* Terminals (tokens from lexer) */
-terminal Asignar, Coma, Numeral, Dolar, CierreDiag, AperturaE, CierreE, Admiracion,
-    Html, Head, Title, Body, Div, Align, Doctype, Lang, Parrafo, Img,
-    Src, Alt, Width, Left, Right, Center, Justify, Texto, Middle, Entero, PuntoComa, Ident, Numero, CADENA;
+terminal Asignar, Coma, Punto, PuntoComa, Admiracion, Pipe, CierreDiag,
+         AperturaE, CierreE, LlaveA, LlaveC, CorcheteA, CorcheteC, Public,
+         Class, Let, Private, String, Connection, Try, Catch, ForName,
+         DriverManager, GetConnection, ClassNotFoundException, SQLException, 
+         PrintStackTrace, Return, Static, Void, Main, Args, ConnectionMysql,
+         New, If, Else, Null, System, Out, Println, Ident, Numero, CADENA, 
+         ParA, ParC, DiferenteDe;
 
 /* Non-terminals */
-non terminal INICIO, HTML_DOC, DOCTYPE, HTML_TAG, HEAD_TAG, TITLE_TAG, BODY_TAG,
-    DIV_ELEMENT, P_ELEMENT, IMG_ELEMENT, ATRIBUTOS, ATRIBUTO, VALOR_ALIGN, 
-    BODY_CONTENT, TEXT_CONTENT, LISTA_ATRIBUTOS;  
+non terminal INICIO, CUERPO, DECLARACIONES, DECLARACION, METODOS, METODO, 
+              SENTENCIAS, SENTENCIA;
 
 /* Starting symbol */
 start with INICIO;
 
-/* Grammar with reduced conflicts */
-INICIO ::= 
-    HTML_DOC |
-    DOCTYPE HTML_DOC
-;
+/* Grammar rules */
+INICIO ::= Public Class Ident LlaveA CUERPO LlaveC;
 
-DOCTYPE ::=
-    Dolar Admiracion Doctype Html Numeral
-    | error Numeral
-;
+CUERPO ::= DECLARACIONES METODOS;
 
-HTML_DOC ::= 
-    HTML_TAG
-;
+DECLARACIONES ::= 
+    | DECLARACION DECLARACIONES
+    ;
 
-HTML_TAG ::=
-    Dolar Html Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral 
-    | Dolar Html LISTA_ATRIBUTOS Numeral HEAD_TAG BODY_TAG Dolar CierreDiag Html Numeral
-    | error Numeral
-;
+DECLARACION ::= 
+      Private String Ident Asignar CADENA PuntoComa
+    | Let Ident Asignar CADENA PuntoComa
+    | Let Ident Asignar Numero PuntoComa
+    | Ident Asignar Numero PuntoComa
+    | Ident Asignar CADENA PuntoComa
+    | Connection Ident Asignar Null PuntoComa
+    ;
 
-HEAD_TAG ::=
-    Dolar Head Numeral TITLE_TAG Dolar CierreDiag Head Numeral
-    | error Numeral
-;
+METODOS ::= 
+    | METODO METODOS
+    ;
 
-TITLE_TAG ::=
-    Dolar Title Numeral TEXT_CONTENT Dolar CierreDiag Title Numeral
-    | error Numeral
-;
+METODO ::= 
+      Public Connection Ident ParA ParC LlaveA SENTENCIAS LlaveC
+    | Public Static Void Main ParA String CorcheteA CorcheteC Ident ParC LlaveA SENTENCIAS LlaveC
+    ;
 
-BODY_TAG ::=
-    Dolar Body Numeral BODY_CONTENT Dolar CierreDiag Body Numeral |
-    Dolar Body LISTA_ATRIBUTOS Numeral BODY_CONTENT Dolar CierreDiag Body Numeral
-    | error Numeral
-;
+SENTENCIAS ::= 
+    | SENTENCIA SENTENCIAS
+    ;
 
-BODY_CONTENT ::=
-    BODY_CONTENT DIV_ELEMENT |
-    BODY_CONTENT P_ELEMENT |
-    BODY_CONTENT TEXT_CONTENT |
-    DIV_ELEMENT |
-    P_ELEMENT |
-    TEXT_CONTENT
-    | error Numeral
-;
-
-DIV_ELEMENT ::=
-    Dolar Div LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Div Numeral
-;
-
-P_ELEMENT ::=
-    Dolar Parrafo Numeral TEXT_CONTENT Dolar CierreDiag Parrafo Numeral |
-    Dolar Parrafo LISTA_ATRIBUTOS Numeral TEXT_CONTENT Dolar CierreDiag Parrafo Numeral |
-    Dolar Parrafo LISTA_ATRIBUTOS Numeral IMG_ELEMENT Dolar CierreDiag Parrafo Numeral
-;
-
-IMG_ELEMENT ::= 
-    Dolar Img LISTA_ATRIBUTOS CierreDiag Numeral
-;
-
-LISTA_ATRIBUTOS ::=
-    LISTA_ATRIBUTOS ATRIBUTO
-    | ATRIBUTO
-;
-
-ATRIBUTO ::= 
-    Align Asignar VALOR_ALIGN |
-    Lang Asignar CADENA |
-    Src Asignar CADENA |
-    Alt Asignar CADENA |
-    Width Asignar CADENA |
-    Ident Asignar CADENA |
-    Entero Ident Asignar Numero PuntoComa
-    | error Numeral 
-    | error PuntoComa
-;
-
-VALOR_ALIGN ::=
-    Left | Right | Center | Justify | Middle | CADENA
-;
-
-TEXT_CONTENT ::=
-    TEXT_CONTENT Ident
-    | TEXT_CONTENT IMG_ELEMENT
-    | IMG_ELEMENT
-    | Ident
-;
+SENTENCIA ::= 
+      Try LlaveA SENTENCIAS LlaveC Catch ParA ClassNotFoundException Pipe SQLException Ident ParC LlaveA SENTENCIAS LlaveC
+    | Class Punto ForName ParA Ident ParC PuntoComa
+    | Ident Asignar DriverManager Punto GetConnection ParA Ident Coma Ident Coma Ident ParC PuntoComa
+    | Ident Punto PrintStackTrace ParA ParC PuntoComa
+    | Return Ident PuntoComa
+    | If ParA Ident DiferenteDe Null ParC LlaveA SENTENCIAS LlaveC Else LlaveA SENTENCIAS LlaveC
+    | System Punto Out Punto Println ParA CADENA ParC PuntoComa
+    ;
